@@ -1,0 +1,5 @@
+.App{
+  background:rgba(219, 218, 219, 0.564);
+  min-height: 100vh;
+  display: flex;
+}
