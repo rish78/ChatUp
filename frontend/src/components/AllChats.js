@@ -23,6 +23,7 @@ const AllChats = () => {
       console.log(data);
       setChats(data);
     } catch (error) {
+      console.log(error);
       toast({
         title: "Error Occured!",
         description: "Failed to Load the chats",

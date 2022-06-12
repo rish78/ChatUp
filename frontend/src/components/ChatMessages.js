@@ -3,6 +3,11 @@ import { ChatState } from '../Context/ChatProvider';
 import { Avatar, Box, FormControl, IconButton, Input, Text, useToast } from "@chakra-ui/react"
 import { ArrowBackIcon, ChatIcon } from "@chakra-ui/icons"
 import axios from "axios";
+import ScrollableChat from './ScrollableChat';
+import io from 'socket.io-client'
+
+const ENDPOINT = "https://chat-upz.herokuapp.com/";
+var socket, selectedChatCompare;
 
 const ChatMessages = () => {
 
@@ -10,11 +15,52 @@ const ChatMessages = () => {
 
     const [messages, setMessages] = useState([]);
     const [newmessage, setNewmessage] = useState();
+    const [socketConnected, setSocketConnected] = useState(false);
 
     const toast = useToast();
 
+   
+    const sendMessage = async(e) => {
+        
+            try {
+                const config = {
+                  headers: {
+                    "Content-type": "application/json",
+                    Authorization: `${user.token}`,
+                  },
+                };
+                setNewmessage("");
+                const { data } = await axios.post(
+                  "/api/message",
+                  {
+                    content: newmessage,
+                    chatid: selectedchat,
+                  },
+                  config
+                );
+                console.log(data);
+
+                socket.emit("new message", data);
+
+                setMessages([...messages, data]);
+            }
+            catch(error){
+                toast({
+                    title: "Error Occured!",
+                    description: "Failed to send the Message",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "bottom",
+                  });
+            }
+        
+    };
+
+
     const fetchMessages = async () => {
         if(!selectedchat){
+          console.log("here")
             return;
         }
 
@@ -30,6 +76,8 @@ const ChatMessages = () => {
               console.log(data);
 
               setMessages(data);
+
+              socket.emit("join chat", selectedchat._id);
         }
         catch(error) {
             toast({
@@ -43,51 +91,47 @@ const ChatMessages = () => {
         }
         }
 
-    
 
     useEffect(() => {
-        fetchMessages();
-    }, [selectedchat]);
+          socket = io(ENDPOINT);
+    
+          socket.emit("setup", user);
+    
+          socket.on("connected", () => setSocketConnected(true));
+    
+    }, []);
 
-    const sendMessage = async(e) => {
-        if((e.key==="Enter" || e instanceof MouseEvent) && newmessage){
-            console.log("send")
-            try {
-                const config = {
-                  headers: {
-                    "Content-type": "application/json",
-                    Authorization: `${user.token}`,
-                  },
-                };
-                setNewmessage("");
-                const { data } = await axios.post(
-                  "api/message",
-                  {
-                    content: newmessage,
-                    chatid: selectedchat,
-                  },
-                  config
-                );
-                console.log(data);
+    useEffect(() => {
+      fetchMessages();
 
-                setMessages([...messages, data]);
-            }
-            catch(error){
-                toast({
-                    title: "Error Occured!",
-                    description: "Failed to send the Message",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "bottom",
-                  });
-            }
-        }
-    };
+      selectedChatCompare = selectedchat;
+  }, [selectedchat]);
+    
+        useEffect(() => {
+          socket.on("message received", (newMessageReceived) => {
+            
+              setMessages([...messages, newMessageReceived]);
+            
+          })
+        })
+
+    
+
+    
+
+    const handleKeydown = (e) => {
+      if((e.key==="Enter") && newmessage){
+          sendMessage()
+      }
+    }
 
     const typingHandler = (e) => {
         setNewmessage(e.target.value)
     }
+
+
+
+    
 
   return (
     <Box>
@@ -132,9 +176,9 @@ const ChatMessages = () => {
             h="75vh"
             borderRadius="lg"
             overflowY="hidden"
-          > 
+          > <ScrollableChat messages={messages} />
             <FormControl
-              onKeyDown={sendMessage}
+              onKeyDown={handleKeydown}
               id="first-name"
               isRequired
               mt={3}
@@ -154,7 +198,7 @@ const ChatMessages = () => {
         ):(
             <Box display="flex" align="center" justifyContent="center" h="100%">
           <Text fontSize="3xl" pb={3} >
-            Click on a user to start chatting
+            select a user and start chatting with them!
           </Text>
 
         </Box>

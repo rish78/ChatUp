@@ -4,7 +4,7 @@ const User = require("../models/userSchema");
 exports.sendMessage = async (req, res) => {
     const {content, chatid} = req.body;
 
-    console.log(chatid);
+   
 
     var newMessage = {
         sender: req.user._id,
@@ -21,7 +21,7 @@ exports.sendMessage = async (req, res) => {
             path: 'chat.users',
             select: "-password",
         })
-        console.log(message);
+       
 
         res.json(message);
     }catch(err){

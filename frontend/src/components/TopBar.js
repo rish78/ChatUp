@@ -18,13 +18,13 @@ const TopBar = () => {
     display="flex"
     justifyContent="space-between"
     alignItems="center"
-    bg="white"
+    bg="#63B3ED"
     w="100%"
     h="10vh"
     p="0 25px"
     
     >
-        <Image src='https://i.ibb.co/gjdQxw2/5ca56f760bbd496d803fbf7a16101ef0-removebg-preview-removebg-preview.png'  objectFit='cover' />
+        <Image src='https://i.ibb.co/5x6XLQc/a95528c06d634e13987e224ac010d3af-removebg-preview.png'  objectFit='cover' />
         <Text fontSize="2xl">
           {user.username}
         </Text>
