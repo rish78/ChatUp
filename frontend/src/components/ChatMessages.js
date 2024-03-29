@@ -6,7 +6,7 @@ import axios from "axios";
 import ScrollableChat from './ScrollableChat';
 import io from 'socket.io-client'
 
-const ENDPOINT = "https://chat-upz.herokuapp.com/";
+const ENDPOINT = "http://localhost:5000/";
 var socket, selectedChatCompare;
 
 const ChatMessages = () => {

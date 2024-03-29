@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require('path');
+const socketio = require('socket.io')
 
 const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
@@ -48,11 +49,11 @@ const server = app.listen(port, () => {                                         
     console.log(`Here we go, Engines started at ${port}.`);
   })
 
-const io = require("socket.io")(server, {
-  pingTimeout: 60000,
+const io = socketio(server, {
   cors: {
-    origin: "https://localhost:3000",
-  }
+    origin: "*",  // Or specify allowed origins
+    methods: ["GET", "POST"],
+  },
 });
 
 io.on("connection", (socket) => {

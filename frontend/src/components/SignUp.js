@@ -36,7 +36,13 @@ function SignUp() {
           },
         };
 
-        const {data} = await axios.post("/api/user/register", {username, name, email, password}, config);
+        console.log(username)
+
+        const res = await axios.post("/api/user/register", {username, name, email, password}, config);
+
+        console.log(res);
+
+        const {data} = res;
 
         if(data){
           toast({

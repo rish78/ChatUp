@@ -13,17 +13,20 @@ exports.registerUser = async(req, res) => {
 
     }
 
+    console.log(username)
+
     const emailExists = await User.findOne({ email });
     const usernameExists = await User.findOne({ username });
 
     if(emailExists){
-        res.status(400).json({
+        return res.status(400).json({
             error: "Email already registered!"
         });
     }
 
     if(usernameExists){
-        res.status(400).json({
+        console.log("here")
+        return res.status(400).json({
             error: "Username already taken!"
         });
     }
@@ -31,6 +34,7 @@ exports.registerUser = async(req, res) => {
 
     bcrypt.hash(password, 10, async (err, hash) => {
         if (err){
+            console.log(err)
             res.status(500).json({
                 error: "Internal Server Error",
             });
@@ -41,6 +45,7 @@ exports.registerUser = async(req, res) => {
             email,
             password: hash
         })
+        console.log(user)
         if(user){
             res.status(201).json({
                 _id: user._id,
