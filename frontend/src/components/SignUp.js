@@ -61,7 +61,7 @@ function SignUp() {
       catch(err){
         toast({
           title: 'Error',
-          description: "err.response.data.message",
+          description: err.response.data.message,
           status: 'error',
           duration: 5000,
           isClosable: true,
