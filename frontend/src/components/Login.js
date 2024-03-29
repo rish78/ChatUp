@@ -48,8 +48,7 @@ const Login = () => {
           navigate('/chats');
         }
       }
-      catch(err){
-        console.log(err.response);
+      catch(err){ 
         toast({
           title: 'Error',
           description: err.response.data.error,

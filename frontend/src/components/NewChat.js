@@ -34,7 +34,7 @@ const NewChat = () => {
 
       const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/user?search=${search}`, config);
 
-      console.log(data);
+      // console.log(data);
       
       setSearchResult(data);
     } catch (error) {

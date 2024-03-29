@@ -20,10 +20,10 @@ const AllChats = () => {
       };
 
       const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/chat`, config);
-      console.log(data);
+      // console.log(data);
       setChats(data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast({
         title: "Error Occured!",
         description: "Failed to Load the chats",
@@ -37,7 +37,7 @@ const AllChats = () => {
   
   const getName = (chat, loggeduser) => {
     
-    console.log(chat.users)
+    // console.log(chat.users)
     return chat.users[0]._id === loggeduser._id ? chat.users[1].username : chat.users[0].username
   }
 
@@ -50,7 +50,7 @@ const AllChats = () => {
     <Stack>
             {chats.map((chat) => (
               <Box
-                onClick={() =>{console.log("hi"); setSelectedchat(chat)}}
+                onClick={() =>{setSelectedchat(chat)}}
                 cursor="pointer"
                 bg={selectedchat === chat ? "#63B3ED" : "#E8E8E8"}
                 color={selectedchat === chat ? "white" : "black"}

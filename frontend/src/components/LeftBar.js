@@ -23,7 +23,7 @@ const LeftBar = () => {
       };
 
       const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/chat`, config);
-      console.log(data);
+      // console.log(data);
       setChats(data);
     } catch (error) {
       toast({

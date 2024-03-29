@@ -38,7 +38,7 @@ const ChatMessages = () => {
                   },
                   config
                 );
-                console.log(data);
+                // console.log(data);
 
                 socket.emit("new message", data);
 
@@ -60,7 +60,7 @@ const ChatMessages = () => {
 
     const fetchMessages = async () => {
         if(!selectedchat){
-          console.log("here")
+          // console.log("here")
             return;
         }
 
@@ -73,7 +73,7 @@ const ChatMessages = () => {
               };
 
               const {data} = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/message/${selectedchat._id}`, config);
-              console.log(data);
+              // console.log(data);
 
               setMessages(data);
 

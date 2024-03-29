@@ -45,7 +45,6 @@ exports.registerUser = async(req, res) => {
             email,
             password: hash
         })
-        console.log(user)
         if(user){
             res.status(201).json({
                 _id: user._id,
