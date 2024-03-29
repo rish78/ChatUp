@@ -31,7 +31,7 @@ const ChatMessages = () => {
                 };
                 setNewmessage("");
                 const { data } = await axios.post(
-                  "/api/message",
+                  `${process.env.REACT_APP_BACKEND_URL}/api/message`,
                   {
                     content: newmessage,
                     chatid: selectedchat,
@@ -72,7 +72,7 @@ const ChatMessages = () => {
                 },
               };
 
-              const {data} = await axios.get(`/api/message/${selectedchat._id}`, config);
+              const {data} = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/message/${selectedchat._id}`, config);
               console.log(data);
 
               setMessages(data);

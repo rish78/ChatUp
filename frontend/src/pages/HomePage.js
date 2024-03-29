@@ -28,6 +28,8 @@ import { useNavigate } from 'react-router-dom';
 const HomePage = () => {
   const navigate = useNavigate();
 
+  console.log(process.env.REACT_APP_BACKEND_URL);
+
     useEffect(() => {
         const userInfo = JSON.parse(localStorage.getItem("userInfo"));
        
