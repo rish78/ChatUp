@@ -1,3 +1,4 @@
+const redisClient = require("../config/cache");
 const Message = require("../models/messageSchema");
 const User = require("../models/userSchema");
 
@@ -22,6 +23,15 @@ exports.sendMessage = async (req, res) => {
             select: "-password",
         })
        
+        //caching
+        const messageForCache = JSON.stringify(message);
+        const cacheKey = `messages:${chatid}`;
+        redisClient.rpush(cacheKey, messageForCache, (err) => {
+            if (err) {
+                console.error("Failed to cache message:", err);
+            }
+        });
+        redisClient.expire(cacheKey, 3600);
 
         res.json(message);
     }catch(err){
